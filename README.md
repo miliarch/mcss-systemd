@@ -148,7 +148,7 @@ To access your server console, issue:
 $ sudo -u minecraft tmux -a -t mc-server1
 ```
 
-To detach from the session and leave it running, simply press "ctrl+b" and then "d" when your terminal is open.
+To detach from the session and leave it running, simply press `ctrl+b` and then `d` when your terminal is open.
 
 ## Stop your server
 
