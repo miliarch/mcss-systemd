@@ -85,7 +85,7 @@ $ sudo useradd -r -m -U -s /bin/bash -d /opt/minecraft minecraft
 
 If you have `git` installed and available:
 ```
-$ sudo -u minecraft git clone https://github.com/miliarch/mcss-systemd.git /opt/minecraft/mcss
+$ sudo git clone https://github.com/miliarch/mcss-systemd.git /opt/minecraft/mcss
 ```
 
 On CentOS 7, the following command will install the git package:
@@ -125,7 +125,7 @@ It's important that your service user is able to read and write to the project d
 $ sudo chown -R minecraft:minecraft /opt/minecraft/mcss
 ```
 
-Note: You'll see `sudo -u minecraft` used for many commands in this installation and configuration guide. This command prefix causes the rest of the command to run as the `minecraft` user. This should result in correct permissions on actions that create new files on the filesystem. I know I've made the mistake of simply using `sudo` when issuing such commands more often than I'd like to admit, and in that instance, it's necessary to correct permissions. Hopefully this section helps when the inevitable permission issue pops up.
+Note: You'll see `sudo -u minecraft` used for some commands in this installation and configuration guide. This command prefix causes the rest of the command to run as the `minecraft` user. This should generally result in correct permissions on actions that create new files on the filesystem. In some cases, like `git clone`, it's not possible to run the command as the `minecraft` user, and permissions get a bit messed up as a result.
 
 ## Configure your first server instance
 
