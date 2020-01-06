@@ -10,7 +10,7 @@ This project utilizes tmux instead of screen, provides a helper script for creat
 1. Administrator level access to a linux operating system that utilizes systemd for service management (CentOS 7 tested)
 2. Local service user with name *minecraft* belonging to group *minecraft*
 3. The project directory must be owned by the local service user
-4. A copy of minecraft_server.jar in the project root directory ([download](https://www.minecraft.net/en-us/download/server))
+4. A copy of minecraft_server.jar must be present in the project root directory ([download](https://www.minecraft.net/en-us/download/server))
 
 ## Prerequisites
 In addition to the requirements above, the following programs must be installed and available to the *minecraft* user:
