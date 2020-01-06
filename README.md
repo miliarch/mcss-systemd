@@ -171,6 +171,7 @@ $ sudo systemctl disable minecraft@server1
 
 # Important paths
 
+This is, of course, where I started documentation of this project. The parent directory `/opt/minecraft` is used throughout this document, but is not a requirement. Feel free to change it to suit your needs.
 ```
 - /etc/systemd/system/minecraft@.service    # systemd service file
 - /opt/minecraft                            # minecraft user home dir, houses server instances and server jar files
@@ -186,4 +187,3 @@ $ sudo systemctl disable minecraft@server1
 
 # Change log
 - 2019-01-05 - v1.0 - Initial version with many automatic convenience behaviors, without many dynamic configuration features (server instance name is about it)
-
