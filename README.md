@@ -187,9 +187,9 @@ This is, of course, where I started documentation of this project. The parent di
 ```
 - /etc/systemd/system/minecraft@.services       # systemd service file
 - /opt/minecraft/mcss                           # minecraft user home dir, houses server instances and server jar files
-- /opt/minecraft/mcss/create_new_instance	    # script to create a new minecraft instance; configures eula and instance scripts
+- /opt/minecraft/mcss/create_new_instance       # script to create a new minecraft instance; configures eula and instance scripts
 - /opt/minecraft/mcss/instances                 # houses server instances / worlds
-- /opt/minecraft/mcss/instances/<i>/scripts	    # houses instance specific scripts used by systemd (start, stop)
+- /opt/minecraft/mcss/instances/<i>/scripts     # houses instance specific scripts used by systemd (start, stop)
 ```
 
 # Notes
