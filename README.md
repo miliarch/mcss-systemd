@@ -128,7 +128,7 @@ Run the create_new_instance script as the `minecraft` user to create a new serve
 $ sudo -u minecraft /opt/minecraft/create_new_instance server1
 ```
 
-You will be prompted to accept the Mojang Minecraft EULA as part of configuration. The helper script generates the eula.txt file as part of server instance creation, specifying "eula=true" as the last line of the file, and as such requires that the user be aware of the EULA and submit acceptance of the EULA terms as part of the run operation. This project is in no way affiliated with Mojang, but I recognize that acceptance of their terms is important.
+You will be prompted to accept the [Mojang Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) as part of configuration. The helper script generates the eula.txt file as part of server instance creation, specifying "eula=true" as the last line of the file, and as such requires that the user be aware of the EULA and submit acceptance of the EULA terms as part of the run operation. This project is in no way affiliated with Mojang, but I recognize that acceptance of their terms is important.
 
 ## Run your server
 
