@@ -1,6 +1,6 @@
 # Minecraft Server Scripts for systemd
 
-This project draws inspiration from one of [justinjahn](https://gist.github.com/justinjahn)'s Gists: [Minecraft server(s) using systemd and screen.](https://gist.github.com/justinjahn/4fe65b552b0622662420928cc8ffc7c0). I learned much from this Gist, and used the foundation to build a framework of sorts.
+This project draws inspiration from one of [justinjahn](https://gist.github.com/justinjahn)'s Gists: [Minecraft server(s) using systemd and screen](https://gist.github.com/justinjahn/4fe65b552b0622662420928cc8ffc7c0). I learned much from this Gist, and used the foundation to build a framework of sorts.
 
 This project utilizes tmux instead of screen, provides a helper script for creation of new instances, and leverages a PID file for parent tmux session tracking by systemd services. I expect many improvements to the helper script to come, such as specification of JVM memory allocation and server port. For now though, it meets my needs, and additional features likely won't be an immediate focus.
 
