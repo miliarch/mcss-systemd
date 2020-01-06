@@ -106,16 +106,22 @@ Note: The name "minecraft_server.jar" is **necessary** for scripts to function
 
 ## Install systemd service script
 
-You'll need to install a systemd service script in order to run the Minecraft server instances as systemd services. The following commands will copy the example script in this repository to the correct system directory and reload the systemd daemon to ensure the service can be used:
+You'll need to install a systemd service script in order to run the Minecraft server instances as systemd services.
+
+The following command will copy the example script in this repository to the correct system directory:
 ```
 $ sudo cp /opt/minecraft/mcss/minecraft@.service.example /etc/systemd/system/minecraft@.service
-$ sudo systemctl daemon-reload
 ```
 
 Once copied, edit the `minecraft@.service` file in the system directory with your text editor of choice and verify that the `WorkingDirectory` and `PIDFile` Service directives are correct. These directives should point at `{project_root}/instances/%i/*`. Default values:
 ```
 WorkingDirectory=/opt/minecraft/mcss/instances/%i
 PIDFile=/opt/minecraft/mcss/instances/%i/tmux-mc-%i.pid
+```
+
+Finally, once contents are validated, reload the systemd daemon to ensure the service can be used:
+```
+$ sudo systemctl daemon-reload
 ```
 
 ## Ensure service user permissions are correct in project directory
