@@ -157,7 +157,7 @@ Your server instance runs in a tmux session until the process ends, at which poi
 
 To access your server console, issue:
 ```
-$ sudo -u minecraft tmux -a -t mc-server1
+$ sudo -u minecraft tmux a -t mc-server1
 ```
 
 To detach from the session and leave it running, simply press `ctrl+b` and then `d` when your terminal is open.
