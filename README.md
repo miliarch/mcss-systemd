@@ -21,7 +21,7 @@ In addition to the requirements above, the following programs must be installed 
 
 This section was written to be modular. If you've already completed a particular step, feel free to skip to more relevant steps.
 
-For the sake of simplicity, the project root directory in all steps is specified as `/opt/minecraft` (partial or complete path), and the server instance name is specified as `server1`. These references can be changed to suit your requirements.
+For the sake of simplicity, the project root directory in all steps is specified as `/opt/minecraft/mcss` (partial or complete path), and the server instance name is specified as `server1`. These references can be changed to suit your requirements.
 
 ## Ensure systemd is running and managing services
 
@@ -85,7 +85,7 @@ $ sudo useradd -r -m -U -s /bin/bash -d /opt/minecraft minecraft
 
 If you have `git` installed and available:
 ```
-$ sudo -u minecraft git clone https://github.com/miliarch/mcss-systemd.git /opt/minecraft
+$ sudo -u minecraft git clone https://github.com/miliarch/mcss-systemd.git /opt/minecraft/mcss
 ```
 
 On CentOS 7, the following command will install the git package:
@@ -108,7 +108,7 @@ Note: The name "minecraft_server.jar" is **necessary** for scripts to function
 
 You'll need to install a systemd service script in order to run the Minecraft server instances as systemd services. The following commands will copy the example script in this repository to the correct system directory and reload the systemd daemon to ensure the service can be used:
 ```
-$ sudo cp /opt/minecraft/minecraft@.service.example /etc/systemd/system/minecraft@.service
+$ sudo cp /opt/minecraft/mcss/minecraft@.service.example /etc/systemd/system/minecraft@.service
 $ sudo systemctl daemon-reload
 ```
 
@@ -116,7 +116,7 @@ $ sudo systemctl daemon-reload
 
 It's important that your service user is able to read and write to the project directory. To ensure the files are owned by the user as intended, run the following command:
 ```
-$ sudo chown -R minecraft:minecraft /opt/minecraft
+$ sudo chown -R minecraft:minecraft /opt/minecraft/mcss
 ```
 
 Note: You'll see `sudo -u minecraft` used for many commands in this installation and configuration guide. This command prefix causes the rest of the command to run as the `minecraft` user. This should result in correct permissions on actions that create new files on the filesystem. I know I've made the mistake of simply using `sudo` when issuing such commands more often than I'd like to admit, and in that instance, it's necessary to correct permissions. Hopefully this section helps when the inevitable permission issue pops up.
@@ -125,7 +125,7 @@ Note: You'll see `sudo -u minecraft` used for many commands in this installation
 
 Run the create_new_instance script as the `minecraft` user to create a new server instance. This script requires that only 1 argument (the instance name) be passed. An example:
 ```
-$ sudo -u minecraft /opt/minecraft/create_new_instance server1
+$ sudo -u minecraft /opt/minecraft/mcss/create_new_instance server1
 ```
 
 You will be prompted to accept the [Mojang Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) as part of configuration. The helper script generates the eula.txt file as part of server instance creation, specifying "eula=true" as the last line of the file, and as such requires that the user be aware of the EULA and submit acceptance of the EULA terms as part of the run operation. This project is in no way affiliated with Mojang, but I recognize that acceptance of their terms is important.
@@ -171,19 +171,19 @@ $ sudo systemctl disable minecraft@server1
 
 # Important paths
 
-This is, of course, where I started documentation of this project. The parent directory `/opt/minecraft` is used throughout this document, but is not a requirement. Feel free to change it to suit your needs.
+This is, of course, where I started documentation of this project. The parent directory `/opt/minecraft/mcss` is used throughout this document, but is not a requirement. Feel free to change it to suit your needs.
 ```
-- /etc/systemd/system/minecraft@.service    # systemd service file
-- /opt/minecraft                            # minecraft user home dir, houses server instances and server jar files
-- /opt/minecraft/create_new_instance	    # script to create a new minecraft instance; configures eula and instance scripts
-- /opt/minecraft/instances                  # houses server instances / worlds
-- /opt/minecraft/instances/<i>/scripts	    # houses instance specific scripts used by systemd (start, stop)
+- /etc/systemd/system/minecraft@.services       # systemd service file
+- /opt/minecraft/mcss                           # minecraft user home dir, houses server instances and server jar files
+- /opt/minecraft/mcss/create_new_instance	    # script to create a new minecraft instance; configures eula and instance scripts
+- /opt/minecraft/mcss/instances                 # houses server instances / worlds
+- /opt/minecraft/mcss/instances/<i>/scripts	    # houses instance specific scripts used by systemd (start, stop)
 ```
 
 # Notes
 
 - If you would like to modify start/stop scripts, focus on changing the create_new_instances script instead of individual start/stop scripts, as this script generates both
-- All server instances reference a local symbolic link that points to /opt/minecraft/minecraft_server.jar by default. If you intend to use separate minecraft_server.jar versions for different server instances, make sure to link the exact jar file in each separate instance using the ln command (e.g.: `ln -s /opt/minecraft/minecraft_server.1.15.1.jar /opt/minecraft/instances/myinstance/minecraft_server.jar`)
+- All server instances reference a local symbolic link that points to /opt/minecraft/mcss/minecraft_server.jar by default. If you intend to use separate minecraft_server.jar versions for different server instances, make sure to link the exact jar file in each separate instance using the ln command (e.g.: `ln -s /opt/minecraft/mcss/minecraft_server.1.15.1.jar /opt/minecraft/mcss/instances/myinstance/minecraft_server.jar`)
 
 # Change log
 - 2019-01-05 - v1.0 - Initial version with many automatic convenience behaviors, without many dynamic configuration features (server instance name is about it)
