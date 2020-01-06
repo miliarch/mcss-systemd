@@ -104,7 +104,7 @@ Download the jar file to your local system, move it to the project root director
 
 Note: The name "minecraft_server.jar" is **necessary** for scripts to function
 
-## Install systemd service file
+## Install systemd service script
 
 You'll need to install a systemd service script in order to run the Minecraft server instances as systemd services. The following commands will copy the example script in this repository to the correct system directory and reload the systemd daemon to ensure the service can be used:
 ```
