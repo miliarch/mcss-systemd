@@ -1,0 +1,18 @@
+[Unit]
+Description=Minecraft Server: %i
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/minecraft/instances/%i
+
+User=minecraft
+Group=minecraft
+
+Type=simple
+PIDFile=/opt/minecraft/instances/%i/tmux-mc-%i.pid
+
+ExecStart=/bin/bash scripts/start
+ExecStop=/bin/bash scripts/stop
+
+[Install]
+WantedBy=multi-user.target

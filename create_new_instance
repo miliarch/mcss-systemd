@@ -1,0 +1,130 @@
+#!/bin/bash
+# Create new Minecraft server instance
+
+# Define die function and check that 1 argument was passed (instance name) - exit via die if not
+# Credit: https://stackoverflow.com/a/699613
+die () {
+    printf "$@"
+    exit 1
+}
+
+[ "$#" -eq 1 ] || die "1 argument required, $# provided\n"
+
+# Store script directory for use in future commands (script always creates new instances under "SCRIPT_DIR/instances/arg1")
+# This won't work if script is symbolic link/sourced
+# Credit: https://stackoverflow.com/a/246128
+instance_name="$1"
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+instance_dir="$script_dir/instances/$instance_name"
+
+# Create new instance directory
+# Credit: https://askubuntu.com/a/29596
+if mkdir $instance_dir; then
+    printf "Successfully created new instance directory: $instance_dir\n\n"
+else
+    die "Instance directory already exists; choose a different name\n"
+fi
+
+# Ask user to accept Mojang's eula
+printf "You must accept Mojang's Minecraft EULA to run a Minecraft server.\n"
+printf "You may review the EULA at: https://account.mojang.com/documents/minecraft_eula\n"
+printf "Do you accept? "
+read answer
+
+# Check user's response and act accordingly
+if [ "$answer" == "y" ] || [ "$answer" == "yes" ]; then
+    printf "\nProceeding...\n\n"
+else
+    # Clean up created instance directory
+    printf "\nRemoving new instance directory: $instance_dir\n"
+    rm -rf "$instance_dir"
+
+    # Inform the user of the bad news
+    die "Cannot proceed without acceptance of Mojang's Minecraft EULA; exiting...\n"
+fi
+
+# Drop in eula.txt with timestamp and indication of acceptance
+eula_file="$instance_dir/eula.txt"
+eula_intro="#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula)."
+eula_accepted_date="#$(date)"
+eula_accepted_symbol="eula=true"
+cat >$eula_file <<EOL
+${eula_intro}
+${eula_accepted_date}
+${eula_accepted_symbol}
+EOL
+printf "EULA file created: $eula_file\n"
+
+# Link minecraft_server.jar
+target_jar="$script_dir/minecraft_server.jar"
+linked_jar="$instance_dir/minecraft_server.jar"
+ln -s $target_jar $linked_jar
+printf "Linked \"$target_jar\" as \"$linked_jar\"\n\n"
+
+# Create start/stop scripts
+mkdir "$instance_dir/scripts"
+start_script="$instance_dir/scripts/start"
+stop_script="$instance_dir/scripts/stop"
+
+printf "Creating start script: $start_script\n"
+cat >$start_script <<EOL
+#!/bin/bash
+# WARNING: This script is automatically generated, and should not be modified manually unless you know what you're doing!
+# I recommend running the create_new_instance script to generate a new Minecraft Server instance, then copying world data over, instead of modifying this file manually
+# Configure session name
+session_name="mc-$instance_name"
+
+# Configure PID file
+pid_file=${instance_dir}/tmux-\${session_name}.pid
+
+# Launch Minecraft server process in tmux session
+/usr/bin/tmux new-session -d -s \$session_name "/usr/bin/java -Xmx512M -jar minecraft_server.jar nogui"
+
+# Capture and record PID in pid_file for use in systemd service scripts
+tmux_pid=\$(tmux list-panes -a -F "#{pane_pid} #{session_name}"| grep \$session_name | awk '{print \$1}')
+echo "\$tmux_pid" > \$pid_file
+EOL
+
+printf "Creating stop script: $stop_script\n"
+cat >$stop_script <<EOL
+#!/bin/bash
+# WARNING: This script is automatically generated, and should not be modified manually unless you know what you're doing!
+# I recommend running the create_new_instance script to generate a new Minecraft Server instance, then copying world data over, instead of modifying this file manually
+
+# Configure session name
+session_name="mc-$instance_name"
+
+# Configure PID file and comparison variables
+pid_file=${instance_dir}/tmux-\${session_name}.pid
+last_tmux_pid=\`cat \$pid_file\`
+current_tmux_pid=\$(tmux list-panes -a -F "#{pane_pid} #{session_name}"| grep \$session_name | awk '{print \$1}')
+
+# If tmux session PID matches the saved version, our known session is still live and the minecraft server should take commands. Perform a graceful stop.
+if [ "\$last_tmux_pid" == "\$current_tmux_pid" ]; then
+    /usr/bin/tmux send -t \$session_name 'say "SERVER SHUTTING DOWN IN 15 SECONDS.."' ENTER
+    /usr/bin/sleep 5
+    /usr/bin/tmux send -t \$session_name 'say "SERVER SHUTTING DOWN IN 10 SECONDS.."' ENTER
+    /usr/bin/sleep 5
+    /usr/bin/tmux send -t \$session_name 'say "SERVER SHUTTING DOWN IN 5 SECONDS.."' ENTER
+    /usr/bin/sleep 5
+    /usr/bin/tmux send -t \$session_name 'save-all' ENTER
+    /usr/bin/tmux send -t \$session_name 'stop' ENTER
+fi
+
+# Remove the file tracking the PID
+rm -f \$pid_file
+EOL
+
+printf "Updating permissions..."
+/usr/bin/chown -R minecraft:minecraft $instance_dir
+/usr/bin/chmod +x $start_script
+/usr/bin/chmod +x $stop_script
+
+# Let user know we're done
+printf "Creation of new minecraft server instance complete!\n\n"
+printf "###################################################\n\n"
+printf "Run your new server instance with:\nsudo systemctl start minecraft@$instance_name\n\n"
+printf "Configure your new server instance to run at boot with:\nsudo systemctl enable minecraft@$instance_name\n\n"
+printf "Disable running this server instance at boot with:\nsudo systemctl disable minecraft@$instance_name\n\n"
+printf "View running server console with:\nsudo -u minecraft tmux a -t mc-$instance_name\n\n"
+
