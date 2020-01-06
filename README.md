@@ -123,7 +123,7 @@ Note: You'll see `sudo -u minecraft` used for many commands in this installation
 
 ## Configure your first server instance
 
-Run the create_new_instance script as the `minecraft` user to create a new server instances. This script requires that only 1 argument (the instance name) be passed. An example:
+Run the create_new_instance script as the `minecraft` user to create a new server instance. This script requires that only 1 argument (the instance name) be passed. An example:
 ```
 $ sudo -u minecraft /opt/minecraft/create_new_instance server1
 ```
