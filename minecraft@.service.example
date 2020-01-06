@@ -9,7 +9,7 @@ User=minecraft
 Group=minecraft
 
 Type=simple
-PIDFile=/opt/minecraft/instances/%i/tmux-mc-%i.pid
+PIDFile=/opt/minecraft/mcss/instances/%i/tmux-mc-%i.pid
 
 ExecStart=/bin/bash scripts/start
 ExecStop=/bin/bash scripts/stop

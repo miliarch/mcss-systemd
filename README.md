@@ -112,9 +112,10 @@ $ sudo cp /opt/minecraft/mcss/minecraft@.service.example /etc/systemd/system/min
 $ sudo systemctl daemon-reload
 ```
 
-Once copied, edit the `minecraft@.service` file in the system directory with your text editor of choice and verify that the `WorkingDirectory` Service directive is correct. This directive should point at `{project_root}/instances/%i`. Default value:
+Once copied, edit the `minecraft@.service` file in the system directory with your text editor of choice and verify that the `WorkingDirectory` and `PIDFile` Service directives are correct. These directives should point at `{project_root}/instances/%i/*`. Default values:
 ```
 WorkingDirectory=/opt/minecraft/mcss/instances/%i
+PIDFile=/opt/minecraft/mcss/instances/%i/tmux-mc-%i.pid
 ```
 
 ## Ensure service user permissions are correct in project directory
