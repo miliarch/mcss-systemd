@@ -3,7 +3,7 @@ Description=Minecraft Server: %i
 After=network.target
 
 [Service]
-WorkingDirectory=/opt/minecraft/instances/%i
+WorkingDirectory=/opt/minecraft/mcss/instances/%i
 
 User=minecraft
 Group=minecraft
